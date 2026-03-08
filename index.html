@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Wayfarer - Your Journey Awaits</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #FFF8F0;
+            --bg-card: #FFFFFF;
+
+            --coral: #FF6B6B;
+            --teal: #4ECDC4;
+            --purple: #A06CD5;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --pink: #FF8FAB;
+            --sky: #74B9FF;
+
+            --outline: #2D3436;
+            --outline-light: #636E72;
+            --text-dark: #2D3436;
+            --text-muted: #636E72;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
+
+        /* Ambient Background - Solid Shapes Only */
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: shapeFloat 25s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .shape-1 {
+            width: 100px;
+            height: 100px;
+            background: var(--coral);
+            top: 5%;
+            left: 5%;
+        }
+
+        .shape-2 {
+            width: 60px;
+            height: 60px;
+            background: var(--teal);
+            top: 15%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 80px;
+            height: 80px;
+            background: var(--purple);
+            bottom: 20%;
+            left: 8%;
+            animation-delay: -10s;
+        }
+
+        .shape-4 {
+            width: 50px;
+            height: 50px;
+            background: var(--yellow);
+            bottom: 30%;
+            right: 5%;
+            animation-delay: -15s;
+        }
+
+        @keyframes shapeFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(20deg); }
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 248, 240, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            border-bottom: 3px solid var(--outline);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--outline);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--coral);
+            border: 3px solid var(--outline);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            color: white;
+        }
+
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--yellow);
+            padding: 10px 16px;
+            border: 3px solid var(--outline);
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .coin-icon {
+            width: 22px;
+            height: 22px;
+            background: var(--outline);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coin-icon svg {
+            width: 14px;
+            height: 14px;
+            color: var(--yellow);
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            padding: 24px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeSlide 0.35s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Title - No Bar */
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--outline);
+            margin-bottom: 20px;
+        }
+
+        /* Game Card */
+              .game-card {
+            background: white;
+            border: 3px solid var(--outline);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start; /* Diubah dari center ke flex-start */
+            gap: 14px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            transition: all 0.15s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardIn 0.4s ease forwards;
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.15s; }
+        .game-card:nth-child(3) { animation-delay: 0.2s; }
+        .game-card:nth-child(4) { animation-delay: 0.25s; }
+        .game-card:nth-child(5) { animation-delay: 0.3s; }
+        .game-card:nth-child(6) { animation-delay: 0.35s; }
+
+        @keyframes cardIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+        }
+
+        .game-card:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .game-icon {
+            width: 65px;
+            height: 65px;
+            background: var(--bg-main);
+            border: 3px solid var(--outline);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .game-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .svg-fallback {
+            display: none;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-icon svg {
+            width: 36px;
+            height: 36px;
+            color: var(--text-muted);
+        }
+
+        .game-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .game-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--outline);
+            margin-bottom: 4px;
+        }
+
+        .game-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .game-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--outline);
+        }
+
+        .coin-mini {
+            width: 18px;
+            height: 18px;
+            background: var(--yellow);
+            border: 2px solid var(--outline);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 900;
+            color: var(--outline);
+        }
+
+        .play-btn {
+            background: var(--teal);
+            color: white;
+            border: 3px solid var(--outline);
+            border-radius: 14px;
+            padding: 10px 18px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--outline);
+            transition: all 0.1s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .play-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 var(--outline);
+        }
+
+        .play-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        /* Profile Section */
+        .profile-card {
+            background: white;
+            border: 3px solid var(--outline);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 3px dashed var(--outline-light);
+        }
+
+        /* Avatar Fixed: Transparent BG, Outline Color Icon */
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border: 4px solid var(--outline);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-avatar svg {
+            width: 44px;
+            height: 44px;
+            color: var(--outline);
+        }
+
+        .profile-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--outline);
+            margin-bottom: 6px;
+            word-break: break-word;
+        }
+
+        .profile-email {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .info-item {
+            background: var(--bg-main);
+            border: 2px solid var(--outline);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--outline);
+            word-break: break-word;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: white;
+            border: 3px solid var(--outline);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+        }
+
+        .stats-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--outline);
+            margin-bottom: 16px;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 2px dashed rgba(0,0,0,0.1);
+        }
+
+        .stats-row:last-child {
+            border-bottom: none;
+        }
+
+        .stats-label {
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .stats-value {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            color: var(--outline);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--coral);
+            color: white;
+            border: 3px solid var(--outline);
+            border-radius: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 0 var(--outline);
+            transition: all 0.1s ease;
+        }
+
+        .logout-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 var(--outline);
+        }
+
+        /* Bottom Navigation - Improved */
+        .bottom-nav {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: white;
+            border: 3px solid var(--outline);
+            border-radius: 25px;
+            z-index: 1000;
+            padding: 8px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item.active {
+            background: var(--purple);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+            
+        }
+
+        .nav-item svg {
+            width: 26px;
+            height: 26px;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active svg {
+            color: white;
+        }
+
+        .nav-label {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active .nav-label {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .shape { display: none; }
+            .header { padding: 12px 16px; }
+            .main-content { padding: 16px; }
+            .game-card { padding: 12px; gap: 12px; }
+            .game-icon { width: 55px; height: 55px; }
+            .profile-avatar { width: 60px; height: 60px; }
+            .profile-name { font-size: 1.2rem; }
+            .bottom-nav { left: 12px; right: 12px; bottom: 12px; }
+            .nav-item { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                        <path d="M2 12h20"/>
+                    </svg>
+                </div>
+                Wayfarer
+            </div>
+            <div class="coin-display">
+                <div class="coin-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="8"/>
+                    </svg>
+                </div>
+                <span id="totalCoins">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Games Tab -->
+        <div id="gamesTab" class="tab-content active">
+
+            <div id="gamesList">
+                <!-- Games will be rendered here -->
+                <div style="text-align:center; padding: 40px; color: var(--text-muted);">Loading games...</div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profileTab" class="tab-content">
+           
+            
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="5"/>
+                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="profile-name" id="profileName">Loading...</div>
+                        <div class="profile-email" id="profileEmail">-</div>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Booking ID</div>
+                        <div class="info-value" id="profileBooking">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Seat No.</div>
+                        <div class="info-value" id="profileSeat">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Traveler</div>
+                        <div class="info-value" id="profileTraveler">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Total Coins</div>
+                        <div class="info-value" id="profileCoins">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-title">Game Statistics</div>
+                <div id="gameStats">
+                    <!-- Stats rendered here -->
+                </div>
+            </div>
+
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <button class="nav-item active" data-tab="games">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="3"/>
+                    <circle cx="8" cy="12" r="2"/>
+                    <path d="M15 9v6"/>
+                    <path d="M18 12h-6"/>
+                </svg>
+                <span class="nav-label">Games</span>
+            </button>
+            <button class="nav-item" data-tab="profile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="5"/>
+                    <path d="M20 21a8 8 0 0 0-16 0"/>
+                </svg>
+                <span class="nav-label">Profile</span>
+            </button>
+        </div>
+    </nav>
+
+    <script type="module">
+        // ===============================
+        // 1. DATA GAME (Inner JSON)
+        // ===============================
+      const GAMES_DATA = [
+            {
+                key: "An Autumn With You",
+                name: "An Autumn With You",
+                description: "Your parents, your Nana and you have just moved to a remote location out in the country.",
+                icon: "png"
+            },
+            {
+                key: "Birdie Bartender",
+                name: "Birdie Bartender",
+                description: "Help Birdie the bartender work her shifts so she can take a nice vacation!",
+                icon: "png"
+            },
+            {
+                key: "Cookies Bakery",
+                name: "Cookie's Bakery",
+                description: "Four days until the annual Winter Festival! It sure is a busy time in your bakery.",
+                icon: "png"
+            },
+            {
+                key: "Dashosaur DX",
+                name: "Dashosaur DX",
+                description: "You play Roxy, one of the last living dashosaurus of this era. She is known for her powerful dash ability. ",
+                icon: "png"
+            },
+            {
+                key: "Dawn Will Come",
+                name: "Dawn Will Come",
+                description: "It's dark. How long has it been dark? Monsters prowl everywhere, supplies are scarce. ",
+                icon: "png"
+            },
+            {
+                key: "Decline",
+                name: "Decline",
+                description: "A story-driven horror game for Game Boy. Investigate a teacher's murder and deal with the effects of old age.",
+                icon: "png"
+            },
+            {
+                key: "Disco Elysium",
+                name: "Disco Elysium",
+                description: "A port of Disco Elysium for Nintendo Game Boy. Well, the first part of it at least.",
+                icon: "png"
+            },
+            {
+                key: "Hauntsfield",
+                name: "Hauntsfield",
+                description: "A story-driven horror game for Game Boy. Investigate a teacher's murder and deal with the effects of old age.",
+                icon: "png"
+            },
+            {
+                key: "Little Dungeon Renovator",
+                name: "Little Dungeon Renovator",
+                description: "A story-driven horror game for Game Boy. Investigate a teacher's murder and deal with the effects of old age.",
+                icon: "png"
+            },
+            {
+                key: "Love Engine",
+                name: "Love Engine",
+                description: "Explore mysterious planets and collect Love Energy to power your spaceship.",
+                icon: "png"
+            },
+            {
+                key: "Murder Mansion",
+                name: "Murder Mansion",
+                description: "The young yet unsuccessful detective Charles Carter is on his biggest case, the mysterious death of the mansion owner Sir William Adams.",
+                icon: "png"
+            },
+            {
+                key: "Princess Poffin and Spider Invasion",
+                name: "Princess Poffin and Spider Invasion",
+                description: "The moth kingdom has been covered in spiderwebs! it's up to poffin to find the spider responsible, and restore her kingdom to its former web-free glory!",
+                icon: "png"
+            },
+            {
+                key: "Sushi Gun",
+                name: "Sushi Gun",
+                description: "You're a bunny armed with the Sushi Gun! Shoot sushi at the hungry cats!",
+                icon: "png"
+            },
+            {
+                key: "Swordbird Song",
+                name: "Swordbird Song",
+                description: "Bird Hero's journey is interrupted when they are struck by lightning and fall onto a remote island. They learn that the island is ruled by the Owl King.",
+                icon: "png"
+            },
+            {
+                key: "Taiyaki Fabulous Museum of Fish",
+                name: "Taiyaki Fabulous Museum of Fish",
+                description: "Welcome to Fishcross Island! Explore the land and water, meet weird characters, and solve nonogram puzzles for items and progress.",
+                icon: "png"
+            },
+            {
+                key: "The Machine",
+                name: "The Machine",
+                description: "It has always been – the powerful few atop the masses – but here, we embrace this infallible truth fully.",
+                icon: "png"
+            }
+        ];
+
+        // SVG Icons Object (used as fallback)
+        const ICONS = {
+            quiz: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>`,
+            puzzle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.452-.968-.907a2.501 2.501 0 1 0-3.214 3.214c.455.166.837.497.907.968a.978.978 0 0 1-.276.837l-1.61 1.611a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.707l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.315 8.69c.232-.232.314-.576.276-.837-.07-.471-.452-.802-.907-.968a2.501 2.501 0 1 1 3.214-3.214c.166.455.497.837.968.907.261.039.605-.044.837-.276l1.611-1.611A2.402 2.402 0 0 1 12 2c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.878.29.492-.075.839-.505 1.019-.969a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.018Z"/></svg>`,
+            memory: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>`,
+            word: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>`,
+            trivia: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4"/><path d="m6.8 15-3.5 2.5"/><path d="M20.7 17.5 17.2 15"/><path d="M6.8 9 3.3 6.5"/><path d="m20.7 6.5-3.5 2.5"/><circle cx="12" cy="12" r="4"/></svg>`,
+            adventure: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 4v16"/><path d="M17 4v16"/><path d="M19 4H9.5a4.5 4.5 0 0 0 0 9H13"/></svg>`
+        };
+
+        // ===============================
+        // 2. FIREBASE SETUP
+        // ===============================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js"
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFPTu4Md7Zvy4618xVT_30e96k1oC8EIk",
+            authDomain: "arise-63f67.firebaseapp.com",
+            databaseURL: "https://arise-63f67-default-rtdb.firebaseio.com",
+            projectId: "arise-63f67",
+            storageBucket: "arise-63f67.firebasestorage.app",
+            messagingSenderId: "847026490456",
+            appId: "1:847026490456:web:8b5475238f1f35d1918e2d",
+            measurementId: "G-K4B4PZDFJF"
+        }
+
+        const app = initializeApp(firebaseConfig)
+        const auth = getAuth(app)
+        const db = getDatabase(app)
+
+        // ===============================
+        // 3. STATE MANAGEMENT
+        // ===============================
+        let currentUser = null;
+        let userData = null;
+
+        // DOM Elements Cache
+        const dom = {
+            gamesList: document.getElementById('gamesList'),
+            totalCoins: document.getElementById('totalCoins'),
+            profileName: document.getElementById('profileName'),
+            profileEmail: document.getElementById('profileEmail'),
+            profileBooking: document.getElementById('profileBooking'),
+            profileSeat: document.getElementById('profileSeat'),
+            profileTraveler: document.getElementById('profileTraveler'),
+            profileCoins: document.getElementById('profileCoins'),
+            gameStats: document.getElementById('gameStats'),
+            logoutBtn: document.getElementById('logoutBtn')
+        };
+
+        // Helper: resilient field getter (tries several possible field names)
+        function getUserField(obj, keys, defaultVal = '-') {
+            if (!obj) return defaultVal;
+            for (const k of keys) {
+                if (Object.prototype.hasOwnProperty.call(obj, k)) {
+                    const v = obj[k];
+                    if (v !== null && v !== undefined && v !== '') return v;
+                }
+            }
+            return defaultVal;
+        }
+
+        // Ensure numeric safe
+        function toIntSafe(v) {
+            const n = parseInt(v, 10);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        // ===============================
+        // 4. RENDER FUNCTIONS
+        // ===============================
+        
+        function renderGames() {
+            if (!dom.gamesList) return;
+            
+            // Check if userData and game_progress exists
+            const progress = (userData && userData.game_progress) ? userData.game_progress : {};
+            
+            let html = '';
+            GAMES_DATA.forEach(game => {
+                const coins = toIntSafe(progress[game.key]);
+                // Build image src path to PNG (developer: place PNGs in assets/icons/<game.key>.png)
+                // onerror hides <img> and shows SVG fallback (so page works even if PNG missing)
+                html += `
+                    <div class="game-card">
+                        <div class="game-icon">
+                            <img src="assets/icons/${game.key}.png" alt="${game.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <div class="svg-fallback" aria-hidden="true">${ICONS[game.icon] || ''}</div>
+                        </div>
+                        <div class="game-info">
+                            <div class="game-name">${escapeHtml(game.name)}</div>
+                            <div class="game-desc">${escapeHtml(game.description)}</div>
+                            <div class="game-progress">
+                                <span class="coin-mini">C</span>
+                                <span>${coins} Coins</span>
+                            </div>
+                        </div>
+                        <a href="mobile.html#${encodeURIComponent(game.key)}" class="play-btn">
+                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                            Play
+                        </a>
+                    </div>
+                `;
+            });
+            
+            dom.gamesList.innerHTML = html;
+        }
+
+        function renderProfile() {
+            if (!userData && !currentUser) return;
+
+            // name: try multiple fields
+            const name = getUserField(userData, ['name','displayName','full_name','fullname','fullName'], 'Unknown');
+
+            // email: prefer auth user email, fallback to userData.email
+            const email = (currentUser && currentUser.email) ? currentUser.email : getUserField(userData, ['email','user_email'], '-');
+
+            // booking id, seat, traveler_type robust lookups
+            const booking = getUserField(userData, ['booking_id','bookingId','booking','bookingid'], '-');
+            const seat = getUserField(userData, ['seat','seat_no','seat_no','seatNumber','seatNo','seat_number'], '-');
+            const traveler = getUserField(userData, ['traveler_type','travelerType','traveler','traveller','traveller_type'], '-');
+
+            dom.profileName.textContent = name;
+            dom.profileEmail.textContent = email;
+            dom.profileBooking.textContent = booking;
+            dom.profileSeat.textContent = seat;
+            dom.profileTraveler.textContent = traveler;
+        }
+
+        function updateCoins() {
+            const progress = (userData && userData.game_progress) ? userData.game_progress : {};
+            let total = 0;
+            Object.values(progress).forEach(c => total += toIntSafe(c));
+            
+            dom.totalCoins.textContent = total;
+            dom.profileCoins.textContent = total;
+        }
+
+        function renderStats() {
+            if (!dom.gameStats) return;
+            
+            const progress = (userData && userData.game_progress) ? userData.game_progress : {};
+            
+            let html = '';
+            GAMES_DATA.forEach(game => {
+                const coins = toIntSafe(progress[game.key]);
+                html += `
+                    <div class="stats-row">
+                        <span class="stats-label">${escapeHtml(game.name)}</span>
+                        <span class="stats-value">
+                            <span class="coin-mini">C</span>
+                            ${coins}
+                        </span>
+                    </div>
+                `;
+            });
+            dom.gameStats.innerHTML = html;
+        }
+
+        // Simple HTML escape for inserted strings
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // ===============================
+        // 5. AUTH & DATA LISTENERS
+        // ===============================
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                // Store UID in localStorage as requested
+                localStorage.setItem('wayfarer_uid', user.uid);
+                
+                // Load user data from DB
+                const userRef = ref(db, "users/" + user.uid);
+                
+                onValue(userRef, (snapshot) => {
+                    userData = snapshot.val();
+                    
+                    // If user doesn't exist in DB yet (edge case)
+                    if (!userData) {
+                        userData = { name: 'New User', game_progress: {} };
+                    }
+                    
+                    // Ensure game_progress object exists
+                    if (!userData.game_progress) {
+                        userData.game_progress = {};
+                    }
+
+                    // Render everything once data arrives
+                    renderGames();
+                    renderProfile();
+                    updateCoins();
+                    renderStats();
+                });
+
+            } else {
+                // User not logged in, redirect
+                localStorage.removeItem('wayfarer_uid');
+                window.location.href = "login.html";
+            }
+        });
+
+        // ===============================
+        // 6. NAVIGATION & EVENTS
+        // ===============================
+
+        // Tab Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.dataset.tab;
+                
+                // Update button states
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Update content visibility
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                const targetTab = document.getElementById(tab + 'Tab');
+                if(targetTab) targetTab.classList.add('active');
+            });
+        });
+
+        // Logout Button
+        dom.logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                localStorage.removeItem('wayfarer_uid');
+                window.location.href = "login.html";
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        });
+
+        // Accessibility: if images later load, ensure fallback hidden
+        // (For dynamic injection we set fallback visibility via onerror above)
+
+    </script>
+</body>
+</html>

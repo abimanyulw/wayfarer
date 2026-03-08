@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+#game {
+    width: 100%;
+    height: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+    <div id="game"></div>
+</div>
+
+<script>
+EJS_player = '#game';
+
+// Core emulator
+EJS_core = 'gb';
+
+// BIOS (kosong untuk GB)
+EJS_biosUrl = '';
+
+// Ambil nama game dari hash URL
+let gameName = window.location.hash.substring(1);
+
+// Jika tidak ada hash, pakai default
+if(!gameName){
+    gameName = "rom";
+}
+
+// URL ROM
+EJS_gameUrl = "binaries/" + gameName + ".gb";
+
+// Folder data emulator
+EJS_pathtodata = 'data/';
+
+EJS_Buttons = {
+    playPause: false,
+    restart: false,
+    mute: false,
+    settings: false,
+    fullscreen: true,
+    saveState: false,
+    loadState: false,
+    screenRecord: false,
+    gamepad: false,
+    cheat: false,
+    volume: false,
+    saveSavFiles: true,
+    loadSavFiles: true,
+    quickSave: false,
+    quickLoad: false,
+    screenshot: false,
+    cacheManager: false,
+    exitEmulation: false
+}
+</script>
+<script src="data/loader.js"></script>
+<script type="module">
+/*
+  Auto-coin script untuk mobile.html
+  - Tambah +1 ke users/<uid>/game_progress/<gameKey> setiap 20s
+  - Pause saat tab tidak aktif
+  - Gunakan runTransaction untuk aman dari race condition
+  - Pastikan rules DB izinkan penulisan untuk auth user
+*/
+
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+
+// ==== 1) Firebase config (sama seperti file index/signup Anda) ====
+const firebaseConfig = {
+  apiKey: "AIzaSyDFPTu4Md7Zvy4618xVT_30e96k1oC8EIk",
+  authDomain: "arise-63f67.firebaseapp.com",
+  databaseURL: "https://arise-63f67-default-rtdb.firebaseio.com",
+  projectId: "arise-63f67",
+  storageBucket: "arise-63f67.firebasestorage.app",
+  messagingSenderId: "847026490456",
+  appId: "1:847026490456:web:8b5475238f1f35d1918e2d",
+  measurementId: "G-K4B4PZDFJF"
+};
+
+// Initialize app only once (avoid duplicate init errors)
+const app = (getApps().length > 0) ? getApps()[0] : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// ==== 2) Ambil game key dari URL (hash atau query param) ====
+function getGameKey() {
+  const hash = window.location.hash.replace('#','').trim();
+  if (hash) return hash;
+  try {
+    const url = new URL(window.location.href);
+    return (url.searchParams.get('game') || '').trim();
+  } catch (e) {
+    return '';
+  }
+}
+const GAME_KEY = getGameKey();
+if (!GAME_KEY) {
+  console.warn('[auto-coin] Game key tidak ditemukan — gunakan mobile.html#quiz atau mobile.html?game=quiz');
+}
+
+// ==== 3) Interval & kontrol ====
+const TICK_MS = 20000; // 20 detik
+let coinInterval = null;
+let currentUser = null;
+
+function startAutoCoin() {
+  if (!currentUser || !GAME_KEY || coinInterval) return;
+  coinInterval = setInterval(async () => {
+    try {
+      const coinRef = ref(db, `users/${currentUser.uid}/game_progress/${GAME_KEY}`);
+      await runTransaction(coinRef, (current) => {
+        const now = Number(current) || 0;
+        return now + 1;
+      });
+      console.debug(`[auto-coin] +1 ${GAME_KEY} for ${currentUser.uid}`);
+    } catch (err) {
+      console.error('[auto-coin] transaction error', err);
+    }
+  }, TICK_MS);
+  console.debug('[auto-coin] started for', GAME_KEY);
+}
+
+function stopAutoCoin() {
+  if (coinInterval) {
+    clearInterval(coinInterval);
+    coinInterval = null;
+    console.debug('[auto-coin] stopped');
+  }
+}
+
+// Pause/resume on visibility change
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    stopAutoCoin();
+  } else {
+    // resume only if auth present
+    if (currentUser) startAutoCoin();
+  }
+});
+
+// Stop on unload (cleanup)
+window.addEventListener('beforeunload', () => stopAutoCoin());
+
+// React to auth state
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  if (user) {
+    // start only if page visible
+    if (!document.hidden) startAutoCoin();
+  } else {
+    stopAutoCoin();
+  }
+});
+
+// Optional: jika ingin menambahkan 1 coin segera saat buka (tidak diminta, jadi dikomentari)
+// (Uncomment jika mau)
+// async function addImmediateCoinOnce() {
+//   if (!currentUser || !GAME_KEY) return;
+//   const coinRef = ref(db, `users/${currentUser.uid}/game_progress/${GAME_KEY}`);
+//   await runTransaction(coinRef, (current) => (Number(current) || 0) + 1);
+// }
+// onAuthStateChanged(auth, (user) => { if (user) addImmediateCoinOnce(); });
+
+</script>
+</body>
+</html>
