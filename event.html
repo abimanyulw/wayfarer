@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>RESTRICTED - Delia</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --danger: #FF2E2E;
+            --danger-glow: rgba(255, 46, 46, 0.4);
+            --text-pale: #e0e0e0;
+            --text-dim: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Subtle Vignette */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Pulse Background */
+        .pulse-bg {
+            position: fixed;
+            width: 150vw;
+            height: 150vw;
+            background: radial-gradient(circle, var(--danger-glow) 0%, transparent 60%);
+            border-radius: 50%;
+            animation: pulseSlow 4s ease-in-out infinite;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        @keyframes pulseSlow {
+            0%, 100% { transform: scale(0.8); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Warning Label */
+        .warning-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--danger);
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+            52% { opacity: 1; }
+            54% { opacity: 0.5; }
+            56% { opacity: 1; }
+        }
+
+        /* Icon Container */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border: 2px solid var(--danger);
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 0 0 0 var(--danger-glow); }
+            50% { box-shadow: 0 0 0 15px transparent; }
+        }
+
+        .icon-container svg {
+            width: 40px;
+            height: 40px;
+            color: var(--danger);
+        }
+
+        /* Title */
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-pale);
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        /* Narrative */
+        .narrative {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .narrative strong {
+            color: var(--text-pale);
+            font-weight: 600;
+        }
+
+        .narrative .danger-text {
+            color: var(--danger);
+        }
+
+        /* Button */
+        .enter-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--danger);
+            border: 2px solid var(--danger);
+            padding: 16px 48px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--danger);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .enter-btn:hover {
+            color: white;
+        }
+
+        .enter-btn:hover::before {
+            left: 0;
+        }
+
+        .enter-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Footer hint */
+        .hint {
+            position: fixed;
+            bottom: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            color: #333;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        /* Back link */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+            z-index: 100;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--text-pale);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="pulse-bg"></div>
+
+    <a href="index.html" class="back-link">[ ESCAPE ]</a>
+
+    <div class="container">
+        
+        <div class="warning-label">! RESTRICTED AREA !</div>
+
+        <div class="icon-container">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 22 22 2 22"></polygon>
+            </svg>
+        </div>
+
+        <h1 class="title">DELIA</h1>
+        <div class="subtitle">THE TRAVELING WITCH</div>
+
+        <p class="narrative">
+            A sick child. A cursed plea.<br>
+            <strong>Delia</strong> and <strong>Bao</strong> descend into the heart of the <span class="danger-text">Glutinous Kingdom</span>.<br><br>
+            What seems like a simple cure unravels into something far more dangerous.
+        </p>
+
+        <a href="mobile.html#Delia" class="enter-btn">ENTER</a>
+
+    </div>
+
+    <div class="hint">SYSTEM STATUS: UNSTABLE</div>
+
+</body>
+</html>
