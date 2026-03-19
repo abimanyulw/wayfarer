@@ -185,5 +185,21 @@ onAuthStateChanged(auth, (user) => {
 // onAuthStateChanged(auth, (user) => { if (user) addImmediateCoinOnce(); });
 
 </script>
+    <script>
+const music = new Audio("music.mp3");
+music.loop = true;
+
+// jalan setelah interaksi pertama (klik/tap)
+function playMusicOnce() {
+    music.play().catch(() => {});
+    
+    // hapus listener biar gak ke-trigger terus
+    document.removeEventListener("click", playMusicOnce);
+    document.removeEventListener("touchstart", playMusicOnce);
+}
+
+document.addEventListener("click", playMusicOnce);
+document.addEventListener("touchstart", playMusicOnce);
+    </script>
 </body>
 </html>
